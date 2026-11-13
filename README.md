@@ -1,133 +1,128 @@
-# Transactional Fraud Detection
+# FraudLens 🛡️
 
-[![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)](https://www.python.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-litestream-orange?logo=streamlit&logoColor=white)](https://streamlit.io/)
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.14-orange?logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.2-orange?logo=pytorch&logoColor=white)](https://pytorch.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green?logo=opensource&logoColor=white)](LICENSE)
+**See the risk. Stop the fraud.**
 
-A complete end-to-end fraud detection project with an interactive Streamlit dashboard, trained model artifacts, and production-ready inference.
+FraudLens is a focused transaction-risk review application. It pairs the existing PaySim-trained MLP fraud classifier with a React interface and a FastAPI service, following the frontend/API deployment pattern used by VoltCast and Estatora.
 
-## Overview
-This repository delivers a ready-to-run fraud scoring system for transaction data. It includes dataset assets, preprocessing pipelines, model artifacts, evaluation summaries, and a Streamlit app for live inference.
+## Brand and product principles
 
-## Dataset
-This project uses the **PaySim** dataset from Kaggle, which simulates realistic mobile money transactions for fraud detection. The full dataset was used as the source, and a downsampled version was later created for efficient model training and evaluation during development.
+- Formal, professional, and analytical
+- Security-focused, minimal, and enterprise-ready
+- Deep Burgundy `#853E52` for primary actions
+- Graphite `#211C20` for the main background
+- Charcoal `#51464C` for secondary surfaces
+- Muted Silver `#C5B8BC` for borders and secondary text
+- Soft Ivory `#F4F1F2` for light surfaces
+- Restrained amber/red for elevated fraud risk; neutral tones for low-risk results
 
-## Live Demo
-**Try the application:** https://transactional-fraud-detector.onrender.com
+## Stack
 
-## Screenshots
+| Layer | Technology | Version |
+| --- | --- | --- |
+| Frontend | React / React DOM | 18.3.1 |
+| Frontend tooling | Vite | 6.4.6 |
+| Styling | Tailwind CSS / `@tailwindcss/vite` | 4.1.11 |
+| Icons | Lucide React | 0.525.0 |
+| API | FastAPI | 0.115.10 |
+| API server | Uvicorn | 0.32.1 |
+| Validation | Pydantic | 2.10.6 |
+| Data and preprocessing | NumPy / pandas / scikit-learn / joblib | 1.26.4 / 2.3.3 / 1.7.2 / 1.4.2 |
+| Inference | TensorFlow / Keras (CPU inference) | 2.21.0 / 3.15.0 |
 
-### Transaction Input Form
-![Transaction Input Form](images/input-form.png)
+The frontend follows the shared React and Tailwind versions and the Vite 6 range used by VoltCast; Vite is pinned to a patched 6.x release. Lucide React follows the version used by Estatora. TensorFlow is retained for the existing Keras model; unused Streamlit, PyTorch, TabNet, and plotting dependencies are not part of the serving stack.
 
-### Legitimate Transaction Prediction
-![Legitimate Transaction](images/legitimate-result.png)
-
-### Fraud Detection Prediction
-![Fraud Detection](images/fraud-result.png)
-
-## Key Capabilities
-- Real-time fraud risk scoring via a Streamlit user interface
-- Support for TensorFlow/Keras and PyTorch TabNet model families
-- Consistent preprocessing through serialized artifacts
-- Built-in `/health` endpoint for monitoring and readiness checks
-- Internal public keepalive through configured `SITE_URL`
-- SEO-aware endpoints with `robots.txt` and `sitemap.xml`
-
-## Project workflow
-The project follows a standard data science workflow from data ingestion to deployment.
+## Project structure
 
 ```text
-Data source (original dataset)
-         ↓
-Preprocessing and feature engineering
-         ↓
-Model training and selection
-         ↓
-Serialized model artifacts and metadata
-         ↓
-Streamlit application loads model and preprocessing bundle
-         ↓
-User submits transaction input via web interface
-         ↓
-Model inference produces fraud risk score
-         ↓
-Displayed output with transaction risk assessment
+FraudLens/
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── artifacts/
+│   │   ├── models/
+│   │   ├── services/
+│   │   ├── config.py
+│   │   ├── main.py
+│   │   └── schemas.py
+│   ├── requirements.txt
+│   └── tests/
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   ├── index.html
+│   ├── package.json
+│   └── vite.config.js
+├── render.yaml
+└── README.md
 ```
 
-> Recommended execution sequence for reproducibility:
-> 1. `notebooks/preprocessing_pipeline.ipynb`
-> 2. `notebooks/model_training.ipynb`
-> 3. `notebooks/result_analysis.ipynb`
-> 4. `notebooks/model_inference.ipynb`
-> 5. `app.py`
+The deployment keeps only the inference model, its metadata, the preprocessing bundle, and the preprocessing manifest. Training datasets, notebooks, prediction dumps, plots, and demo documents are not required to run the application.
 
-## Key Results
-The table below summarizes the evaluation metrics for all trained models.
+## Local development
 
-| Model | ROC-AUC | PR-AUC | Fraud F1 | False Positives | False Negatives |
-|-------|--------:|-------:|---------:|----------------:|----------------:|
-| **MLP (Best)** | **0.9987** | **0.9949** | **0.9686** | **34** | **43** |
-| BiLSTM | 0.9975 | 0.9944 | 0.9630 | 43 | 48 |
-| GRU | 0.9974 | 0.9938 | 0.9608 | 40 | 56 |
-| TabNet | 0.9923 | 0.9667 | 0.8970 | 90 | 157 |
-| FT-Transformer | 0.9768 | 0.8963 | 0.8043 | 338 | 176 |
-| TabTransformer | 0.9639 | 0.8347 | 0.7504 | 425 | 237 |
+Requirements: Python 3.11.11 and Node.js 18 or newer. Python is pinned to 3.11.11, and TensorFlow/Keras are pinned to versions compatible with the saved model.
 
-The **MLP** model achieved the best overall performance across all evaluated models, with the highest ROC-AUC, PR-AUC, and Fraud F1-score while maintaining the lowest number of false positives and false negatives. It was therefore selected as the final deployment model.
-The MLP model is the top performer in this comparison and should be noted as the best-performing candidate for fraud detection within this project.
+### Start the API
 
-## Repository structure
-- `app.py` — primary Streamlit application and deployment logic
-- `data/` — source datasets used for model training and evaluation
-- `models/` — serialized model artifacts and metadata
-- `artifacts/` — preprocessing bundles and training metadata
-- `notebooks/` — model training, preprocessing, and evaluation notebooks
-- `results/` — evaluation outputs and prediction results
-- `images/` — generated analysis plots and visualization outputs
-- `render.yaml` — optional deployment configuration
-- `requirements.txt` — Python package dependencies
-- `README.md` — repository documentation
-- `LICENSE` — license terms
-- [`demo/`](demo/) — recorded deployment video demonstrating project execution
-- [`documents/`](documents/) — project proposal and final report
+```powershell
+cd backend
+conda create --prefix .venv python=3.11 pip
+.\.venv\python.exe -m pip install -r requirements.txt
+Copy-Item .env.example .env
+.\.venv\python.exe -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
 
-## Installation
-1. Clone the repository.
-   ```bash
-   git clone https://github.com/srabonti-codes/Transactional-Fraud-Detection.git
-   ```
-2. Change directory into the project.
-   ```bash
-   cd Transactional-Fraud-Detection
-   ```
-3. Create and activate a Python virtual environment.
-4. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-5. Run the application:
-   ```bash
-   streamlit run app.py
-   ```
+API docs: `http://localhost:8000/api/docs`
 
-## Limitations
-- The model was trained and evaluated using the **PaySim** synthetic transaction dataset, which may not fully capture the complexity and diversity of real-world financial transactions.
-- The deployed application performs inference only and does not support continuous online learning or automatic model retraining.
-- Fraud predictions are generated from transaction-level features and do not incorporate customer behavioral history, device fingerprints, IP intelligence, or network-based relationships.
-- Model performance may decrease when applied to transaction distributions that differ significantly from the training data (data drift).
-- The application is intended for research, educational, and demonstration purposes rather than production financial decision-making.
+### Start the frontend
 
-## Future Work
-- Evaluate the framework on real-world financial transaction datasets to improve practical applicability.
-- Implement automated model retraining and monitoring to address data drift and maintain prediction performance.
-- Incorporate graph-based and temporal deep learning models for detecting coordinated fraud patterns.
-- Integrate explainable AI (XAI) techniques such as SHAP or LIME to provide interpretable fraud predictions.
-- Develop REST API endpoints and database integration for seamless deployment into enterprise fraud detection pipelines.
-- Extend the system with real-time streaming inference using technologies such as Apache Kafka or Apache Spark Streaming.
-- Investigate advanced transformer-based architectures and ensemble learning methods to further improve fraud detection accuracy.
+In another terminal:
 
-## License
-This repository is distributed under the MIT License. See the [LICENSE](LICENSE) for details.
+```powershell
+cd frontend
+npm ci
+npm run dev
+```
+
+Open the Vite URL, normally `http://localhost:5173`. The development server proxies `/api` requests to `http://localhost:8000`.
+
+## API
+
+- `GET /` — service metadata
+- `GET /api/health` — model health and prediction readiness
+- `GET /api/model-info` — model name, supported transaction types, and features
+- `GET /api/metrics` — hold-out evaluation metrics for the selected model
+- `POST /api/predict` — score a transaction
+
+Example request:
+
+```json
+{
+  "transaction_type": "TRANSFER",
+  "hour": 14,
+  "amount": 1250.0,
+  "sender_balance_before": 5000.0,
+  "sender_balance_after": 3750.0,
+  "receiver_balance_before": 10000.0,
+  "receiver_balance_after": 11250.0
+}
+```
+
+Fraud scores are decision support, not a guarantee or a substitute for an institution's review and controls. The model was trained on synthetic PaySim data and may not generalize to live payment data.
+
+## Tests and production build
+
+```powershell
+cd backend
+.\.venv\python.exe -m pytest
+```
+
+```powershell
+cd frontend
+npm ci
+npm run build
+```
+
+## Render deployment
+
+The root `render.yaml` defines a FastAPI web service and a React static site. The API health check is `/api/health`; the frontend receives the API origin through `VITE_API_URL`. If the final Render service URLs differ from the blueprint defaults, update `VITE_API_URL` and the API's `ALLOWED_ORIGINS` before redeploying.

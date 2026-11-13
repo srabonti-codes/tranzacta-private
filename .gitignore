@@ -12,9 +12,14 @@ venv/
 env/
 ENV/
 
+# Frontend
+node_modules/
+dist/
+
 # Environment variables
 .env
 .env.*
+!.env.example
 
 # Jupyter
 .ipynb_checkpoints/
