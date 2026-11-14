@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
     title=APP_NAME,
     version=APP_VERSION,
-    description="FraudLens transaction risk scoring API.",
+    description="Tranzacta transaction risk scoring API.",
     docs_url="/api/docs",
     openapi_url="/api/openapi.json",
 )

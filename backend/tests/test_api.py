@@ -25,9 +25,10 @@ VALID_PAYLOAD = {
 
 
 def test_root_and_health_endpoints() -> None:
-    assert client.get("/").json()["application"] == "FraudLens"
+    assert app.title == "Tranzacta"
+    assert client.get("/").json()["application"] == "Tranzacta"
     health = client.get("/api/health").json()
-    assert health["application"] == "FraudLens"
+    assert health["application"] == "Tranzacta"
     assert health["status"] == "healthy"
     assert health["prediction_ready"] is True
     assert health["model_loaded"] is True
@@ -46,8 +47,10 @@ def test_model_information_and_metrics_endpoints() -> None:
     model_info = client.get("/api/model-info")
     metrics = client.get("/api/metrics")
     assert model_info.status_code == 200
+    assert model_info.json()["application"] == "Tranzacta"
     assert "log_amount" in model_info.json()["feature_columns"]
     assert metrics.status_code == 200
+    assert metrics.json()["application"] == "Tranzacta"
     assert metrics.json()["metrics"]["ROC-AUC"] > 0.99
 
 

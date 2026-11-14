@@ -1,8 +1,8 @@
-# FraudLens 🛡️
+# Tranzacta 🛡️
 
 **See the risk. Stop the fraud.**
 
-FraudLens is a focused transaction-risk review application. It pairs the existing PaySim-trained MLP fraud classifier with a React interface and a FastAPI service, following the frontend/API deployment pattern used by VoltCast and Estatora.
+Tranzacta is a focused transaction-risk review application. It pairs the existing PaySim-trained MLP fraud classifier with a React interface and a FastAPI service, following the frontend/API deployment pattern used by VoltCast and Estatora.
 
 ## Brand and product principles
 
@@ -34,7 +34,7 @@ The frontend follows the shared React and Tailwind versions and the Vite 6 range
 ## Project structure
 
 ```text
-FraudLens/
+Tranzacta/
 ├── backend/
 │   ├── app/
 │   │   ├── api/
@@ -125,4 +125,4 @@ npm run build
 
 ## Render deployment
 
-The root `render.yaml` defines a FastAPI web service and a React static site. The API health check is `/api/health`; the frontend receives the API origin through `VITE_API_URL`. If the final Render service URLs differ from the blueprint defaults, update `VITE_API_URL` and the API's `ALLOWED_ORIGINS` before redeploying.
+The root `render.yaml` defines the `tranzacta-api` FastAPI web service and the `tranzacta` React static site. The API health check is `/api/health`; the frontend receives the API origin through `VITE_API_URL`. If the final Render service URLs differ from `https://tranzacta-api.onrender.com` and `https://tranzacta.onrender.com`, update `VITE_API_URL` and the API's `ALLOWED_ORIGINS` before redeploying.

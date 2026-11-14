@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException
 
-from app.config import APP_VERSION
+from app.config import APP_NAME, APP_VERSION
 from app.schemas import PredictionInput, PredictionResponse
 from app.services.fraud_service import fraud_service
 
@@ -14,7 +14,7 @@ async def health_check() -> dict:
     ready = fraud_service.is_ready()
     return {
         "status": "healthy" if ready else "degraded",
-        "application": "FraudLens",
+        "application": APP_NAME,
         "version": APP_VERSION,
         "model_loaded": ready,
         "prediction_ready": ready,

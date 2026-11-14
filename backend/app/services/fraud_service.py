@@ -9,7 +9,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from app.config import MODEL_METADATA_PATH, MODEL_PATH, PREPROCESSING_PATH
+from app.config import APP_NAME, MODEL_METADATA_PATH, MODEL_PATH, PREPROCESSING_PATH
 from app.schemas import PredictionInput
 
 logger = logging.getLogger(__name__)
@@ -53,7 +53,7 @@ class FraudDetectionService:
             self.model = None
             self.model_name = "Unavailable"
             self.load_error = exc
-            logger.exception("Could not load FraudLens model artifacts.")
+            logger.exception("Could not load Tranzacta model artifacts.")
 
     def is_ready(self) -> bool:
         return (
@@ -126,7 +126,7 @@ class FraudDetectionService:
 
     def get_model_info(self) -> dict[str, Any]:
         return {
-            "application": "FraudLens",
+            "application": APP_NAME,
             "model_loaded": self.is_ready(),
             "model_name": self.model_name,
             "model_family": self.model_metadata.get("model_family"),
@@ -140,7 +140,7 @@ class FraudDetectionService:
 
     def get_metrics(self) -> dict[str, Any]:
         return {
-            "application": "FraudLens",
+            "application": APP_NAME,
             "model_loaded": self.is_ready(),
             "model_name": self.model_name,
             "metrics": self.model_metadata.get("selection_metrics", {}),

@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: fraudlens-api
+    name: tranzacta-api
     runtime: python
     plan: free
     rootDir: backend
@@ -11,23 +11,22 @@ services:
       - key: APP_ENV
         value: production
       - key: APP_NAME
-        value: FraudLens
+        value: Tranzacta
       - key: APP_VERSION
         value: 1.0.0
       - key: PYTHON_VERSION
         value: 3.11.11
       - key: ALLOWED_ORIGINS
-        value: https://fraudlens.onrender.com,http://localhost:5173
+        value: https://tranzacta.onrender.com,http://localhost:5173
 
-  - type: web
-    name: fraudlens
-    runtime: static
+  - type: static
+    name: tranzacta
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        value: https://fraudlens-api.onrender.com
+        value: https://tranzacta-api.onrender.com
     routes:
       - type: rewrite
         source: /*

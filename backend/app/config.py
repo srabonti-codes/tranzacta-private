@@ -9,7 +9,7 @@ ROOT_DIR = Path(__file__).resolve().parents[2]
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 load_dotenv(BACKEND_DIR / ".env")
 
-APP_NAME = os.getenv("APP_NAME", "FraudLens")
+APP_NAME = os.getenv("APP_NAME", "Tranzacta")
 APP_VERSION = os.getenv("APP_VERSION", "1.0.0")
 APP_ENV = os.getenv("APP_ENV", "development")
 ALLOWED_ORIGINS = [

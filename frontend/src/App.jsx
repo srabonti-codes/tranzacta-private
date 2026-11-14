@@ -70,10 +70,10 @@ function App() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <a className="brand" href="/" aria-label="FraudLens home">
+        <a className="brand" href="/" aria-label="Tranzacta home">
           <span className="brand-mark"><Shield aria-hidden="true" /></span>
           <span className="brand-copy">
-            <strong>FraudLens</strong>
+            <strong>Tranzacta</strong>
             <small>See the risk. Stop the fraud.</small>
           </span>
         </a>
