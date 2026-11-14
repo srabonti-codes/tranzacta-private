@@ -9,7 +9,7 @@ from app.services.fraud_service import fraud_service
 router = APIRouter(prefix="/api")
 
 
-@router.get("/health")
+@router.api_route("/health", methods=["GET", "HEAD"])
 async def health_check() -> dict:
     ready = fraud_service.is_ready()
     return {

@@ -32,6 +32,9 @@ def test_root_and_health_endpoints() -> None:
     assert health["status"] == "healthy"
     assert health["prediction_ready"] is True
     assert health["model_loaded"] is True
+    head = client.head("/api/health")
+    assert head.status_code == 200
+    assert head.content == b""
 
 
 def test_real_model_predicts_with_retained_artifacts() -> None:
